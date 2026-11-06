@@ -16,6 +16,7 @@ uvicorn main:app --reload
 
 - 상태 확인: http://127.0.0.1:8000/ → `{"status":"ok"}`
 - API 실행 화면: http://127.0.0.1:8000/docs
+- 포트폴리오 준비본: http://127.0.0.1:8000/portfolio
 - `POST /guestbook`: `{"name":"방문자","content":"안녕하세요"}`
 - `GET /guestbook`: 최신순 목록
 
@@ -23,6 +24,15 @@ uvicorn main:app --reload
 앞뒤 공백을 제거하며 공백뿐인 입력은 422로 거절합니다. SQL 값은 `?` 파라미터로 전달합니다.
 DB는 기본적으로 프로젝트 폴더의 `guestbook.db`이며 `GUESTBOOK_DB` 환경변수로 경로를 바꿀 수 있습니다.
 DB와 가상환경은 Git에 포함하지 않습니다.
+
+## 배포 준비
+
+최종 진로 선택 전이므로 실제 서버 배포는 하지 않았습니다.
+Dockerfile은 준비했으나 이 세션에서 컨테이너 빌드는 검증하지 않았습니다.
+배포할 때 `/data`에 쓰기 가능한 영구 볼륨을 연결해야 재시작·재배포 뒤에도 글이 남습니다.
+홈서버나 Python 호스팅에서는 `GUESTBOOK_DB`를 영구 디스크 경로로 설정하고
+`uvicorn main:app --host 0.0.0.0 --port 8000`으로 실행할 수 있습니다.
+실제 배포 후 휴대폰 접속 확인과 주소창이 보이는 캡처는 별도 수행합니다.
 
 ## 검증
 
