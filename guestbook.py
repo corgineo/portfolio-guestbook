@@ -12,22 +12,40 @@ router = APIRouter(tags=["guestbook"])
 
 
 class Message(BaseModel):
-    model_config = ConfigDict(str_strip_whitespace=True)
+    model_config = ConfigDict(str_strip_whitespace=True, extra="forbid")
 
     name: str = Field(min_length=1, max_length=10)
     content: str = Field(min_length=1, max_length=500)
 
 
+def database_path() -> Path:
+    return Path(os.environ.get("GUESTBOOK_DB", str(Path(__file__).with_name("guestbook.db"))))
+
+
 @contextmanager
 def open_database():
-    path = os.environ.get("GUESTBOOK_DB", str(Path(__file__).with_name("guestbook.db")))
-    connection = sqlite3.connect(path)
+    connection = sqlite3.connect(database_path(), timeout=10)
     connection.row_factory = sqlite3.Row
     try:
         with connection:
             yield connection
     finally:
         connection.close()
+
+
+def init_database() -> None:
+    database_path().parent.mkdir(parents=True, exist_ok=True)
+    with open_database() as db:
+        db.execute(
+            """
+            CREATE TABLE IF NOT EXISTS guestbook (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                content TEXT NOT NULL,
+                created_at TEXT NOT NULL
+            )
+            """
+        )
 
 
 @router.post("/guestbook")

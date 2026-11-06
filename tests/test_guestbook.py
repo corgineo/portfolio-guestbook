@@ -25,7 +25,7 @@ class GuestbookTests(unittest.TestCase):
         self.temp.cleanup()
 
     def test_health_and_latest_first(self):
-        self.assertEqual(self.client.get("/").json(), {"status": "ok"})
+        self.assertEqual(self.client.get("/health").json(), {"status": "ok"})
         first = self.client.post("/guestbook", json={"name": " 첫째 ", "content": "첫 글"})
         second = self.client.post("/guestbook", json={"name": "둘째", "content": "새 글"})
         self.assertEqual(first.status_code, 200)
@@ -80,6 +80,9 @@ class GuestbookTests(unittest.TestCase):
                       if getattr(route, "path", None) == "/guestbook"
                       and method in getattr(route, "methods", set())]
             self.assertEqual(len(routes), 1)
+        home = self.client.get("/")
+        self.assertEqual(home.status_code, 200)
+        self.assertIn("text/html", home.headers["content-type"])
         self.assertEqual(self.client.get("/portfolio").status_code, 200)
 
 
