@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>커리어 트윈</title>
+<!-- ✏️ 표시가 있는 문구 6곳만 내 말로 바꾸면 된다. 디자인은 그대로 둬도 된다. -->
+<style>
+  :root { --ink:#1b2333; --sub:#5b6577; --brand:#2f5aa8; --soft:#eef3fb; --line:#dfe5ee; }
+  * { box-sizing:border-box; margin:0; }
+  body { font-family:-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif; color:var(--ink); background:#fff; line-height:1.6; }
+  .wrap { max-width:960px; margin:0 auto; padding:0 24px; }
+  header { padding:20px 0; font-weight:700; color:var(--brand); }
+  .hero { padding:72px 0 64px; }
+  .hero h1 { font-size:44px; line-height:1.25; letter-spacing:-0.02em; }
+  .hero p { font-size:19px; color:var(--sub); margin-top:16px; max-width:640px; }
+  .btn { display:inline-block; margin-top:28px; padding:14px 28px; background:var(--brand); color:#fff; border-radius:10px; text-decoration:none; font-weight:600; }
+  section { padding:48px 0; border-top:1px solid var(--line); }
+  h2 { font-size:26px; margin-bottom:20px; }
+  .for { background:var(--soft); border-radius:14px; padding:24px 28px; font-size:18px; }
+  .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .card { border:1px solid var(--line); border-radius:14px; padding:22px; }
+  .card b { display:block; font-size:18px; margin-bottom:8px; }
+  .card span { color:var(--sub); font-size:15px; }
+  .stat { font-size:15px; color:var(--sub); margin-top:16px; }
+  footer { padding:40px 0; color:var(--sub); font-size:14px; border-top:1px solid var(--line); }
+  @media (max-width:720px){ .hero h1{font-size:32px} .grid{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>커리어 트윈</header>
+
+  <div class="hero">
+    <!-- ✏️ 1. 큰 제목 -->
+    <h1>진로 후보는 세 개,<br>선택의 근거는 있나요?</h1>
+    <!-- ✏️ 2. 한 줄 설명 -->
+    <p>창업가, 마케터, 개발자. AI가 들려준 미래를 공개 자료와 현직자 답변으로 비교해 보세요.</p>
+    <!-- ✏️ 3. 버튼 문구 -->
+    <a class="btn" href="#how">비교 방법 살펴보기</a>
+  </div>
+
+  <section>
+    <h2>이런 분께</h2>
+    <!-- ✏️ 4. 대상 고객 -->
+    <div class="for">진로 후보 2~3개 사이에서 고민 중인 대학교 2~3학년</div>
+  </section>
+
+  <section>
+    <h2 id="how">어떻게 도와주나요</h2>
+    <div class="grid">
+      <div class="card"><b>트윈 인터뷰</b><span>진로 후보마다 10년 후의 나를 만들어 같은 질문을 던집니다.</span></div>
+      <div class="card"><b>자동 사실 확인</b><span>답변 속 연봉·근무시간·채용 전망을 공개 통계와 비교합니다.</span></div>
+      <div class="card"><b>현직자 한 줄 확인</b><span>AI가 틀리기 쉬운 질문만 골라 현직자에게 짧게 묻습니다.</span></div>
+    </div>
+    <!-- ✏️ 5. 근거 한 줄 (내 프로젝트 결과로) -->
+    <p class="stat">이번 프로젝트에서 판정한 AI 트윈의 소득·근무시간 주장 12개는 자체 기준의 가중 자료 부합도 29%였습니다. 작은 사례의 결과이며 AI 전체의 정확도를 뜻하지 않습니다.</p>
+  </section>
+
+  <footer>
+    <!-- ✏️ 6. 만든 사람 -->
+    가천대학교 컴퓨터공학과 김희민 · 2026 아르테크네 프로젝트<br>
+    서비스 기획 시안 · AI 작성 문구 / 본인 검토 전 · 실제 서비스 신청은 받지 않습니다.
+  </footer>
+</div>
+</body>
+</html>

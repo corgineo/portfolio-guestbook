@@ -7,6 +7,8 @@ from pathlib import Path
 from typing import List
 
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, ConfigDict
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -75,3 +77,11 @@ def list_entries():
         return [dict(row) for row in connection.execute(
             "SELECT id, name, content, created_at FROM guestbook ORDER BY created_at DESC, id DESC"
         ).fetchall()]
+
+
+@app.get("/portfolio", include_in_schema=False)
+def portfolio():
+    return FileResponse(BASE_DIR / "static" / "index.html")
+
+
+app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
