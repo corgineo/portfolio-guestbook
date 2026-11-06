@@ -46,7 +46,7 @@ app = FastAPI(title="포트폴리오 방명록 API", lifespan=lifespan)
 
 class GuestbookCreate(BaseModel):
     model_config = ConfigDict(str_strip_whitespace=True, extra="forbid")
-    name: str = Field(min_length=1, max_length=50)
+    name: str = Field(min_length=1, max_length=10)
     content: str = Field(min_length=1, max_length=500)
 
 
