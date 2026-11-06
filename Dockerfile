@@ -2,7 +2,7 @@ FROM python:3.12-slim
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-COPY main.py .
+COPY main.py guestbook.py ./
 COPY static ./static
 RUN useradd --create-home appuser && mkdir /data && chown appuser:appuser /data
 ENV GUESTBOOK_DB=/data/guestbook.db

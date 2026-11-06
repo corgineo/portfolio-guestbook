@@ -11,6 +11,8 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, ConfigDict
 
+from guestbook import router as guestbook_router
+
 BASE_DIR = Path(__file__).resolve().parent
 DB_PATH = Path(os.environ.get("GUESTBOOK_DB", str(BASE_DIR / "guestbook.db")))
 
@@ -60,23 +62,8 @@ def health():
     return {"status": "ok"}
 
 
-@app.post("/guestbook", response_model=GuestbookEntry)
-def create_entry(entry: GuestbookCreate):
-    created_at = datetime.now(timezone.utc).isoformat()
-    with database() as connection:
-        cursor = connection.execute(
-            "INSERT INTO guestbook (name, content, created_at) VALUES (?, ?, ?)",
-            (entry.name, entry.content, created_at),
-        )
-        return {"id": cursor.lastrowid, **entry.model_dump(), "created_at": created_at}
 
 
-@app.get("/guestbook", response_model=List[GuestbookEntry])
-def list_entries():
-    with database() as connection:
-        return [dict(row) for row in connection.execute(
-            "SELECT id, name, content, created_at FROM guestbook ORDER BY created_at DESC, id DESC"
-        ).fetchall()]
 
 
 @app.get("/portfolio", include_in_schema=False)
@@ -85,3 +72,6 @@ def portfolio():
 
 
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
+
+
+app.include_router(guestbook_router)

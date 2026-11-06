@@ -49,6 +49,39 @@ class GuestbookTests(unittest.TestCase):
         with TestClient(self.main.app) as reopened:
             self.assertEqual(reopened.get("/guestbook").json()[0]["content"], text)
 
+    def test_name_length_boundary(self):
+        for length in (9, 10):
+            response = self.client.post(
+                "/guestbook", json={"name": "가" * length, "content": "경계값 확인"}
+            )
+            self.assertEqual(response.status_code, 200)
+        rejected = self.client.post(
+            "/guestbook", json={"name": "가" * 11, "content": "저장되면 안 되는 글"}
+        )
+        self.assertEqual(rejected.status_code, 422)
+        self.assertEqual(len(self.client.get("/guestbook").json()), 2)
+
+    def test_trimming_and_content_boundary(self):
+        accepted = self.client.post(
+            "/guestbook", json={"name": "  " + "가" * 10 + "  ", "content": " " + "글" * 500 + " "}
+        )
+        self.assertEqual(accepted.status_code, 200)
+        self.assertEqual(accepted.json()["name"], "가" * 10)
+        self.assertEqual(accepted.json()["content"], "글" * 500)
+        for content in (" \n\t ", "글" * 501):
+            with self.subTest(content_length=len(content)):
+                response = self.client.post("/guestbook", json={"name": "검증", "content": content})
+                self.assertEqual(response.status_code, 422)
+        self.assertEqual(len(self.client.get("/guestbook").json()), 1)
+
+    def test_routes_are_unique_and_portfolio_still_opens(self):
+        for method in ("GET", "POST"):
+            routes = [route for route in self.main.app.routes
+                      if getattr(route, "path", None) == "/guestbook"
+                      and method in getattr(route, "methods", set())]
+            self.assertEqual(len(routes), 1)
+        self.assertEqual(self.client.get("/portfolio").status_code, 200)
+
 
 if __name__ == "__main__":
     unittest.main()

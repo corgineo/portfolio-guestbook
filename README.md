@@ -20,7 +20,7 @@ uvicorn main:app --reload
 - `POST /guestbook`: `{"name":"방문자","content":"안녕하세요"}`
 - `GET /guestbook`: 최신순 목록
 
-데이터는 `id`, `name`(1~50자), `content`(1~500자), `created_at`(서버의 UTC 시각)으로 구성합니다.
+데이터는 `id`, `name`(1~10자), `content`(1~500자), `created_at`(서버의 UTC 시각)으로 구성합니다.
 앞뒤 공백을 제거하며 공백뿐인 입력은 422로 거절합니다. SQL 값은 `?` 파라미터로 전달합니다.
 DB는 기본적으로 프로젝트 폴더의 `guestbook.db`이며 `GUESTBOOK_DB` 환경변수로 경로를 바꿀 수 있습니다.
 DB와 가상환경은 Git에 포함하지 않습니다.
@@ -42,6 +42,9 @@ python -m unittest discover -s tests -v
 ```
 
 ## 작업 구분
+
+- 등록·목록 API는 `guestbook.py`로 분리해 AI 지원으로 재작성했습니다. 기존 API 구현 본문을 읽지 않고 요청·응답 조건과 DB 구조를 기준으로 작성했으며, 본인이 독립 구현한 체험으로 기록하지 않습니다.
+- `main.py`는 기존 두 API 구현 대신 새 라우터를 연결합니다. DB 초기화와 다른 페이지 기능은 기존 구성을 유지합니다.
 
 - 코드·정적 포트폴리오: AI 작성 준비본
 - 개인 소개 내용·최종 진로·체험 소감·확신도: 본인 확인 대기
